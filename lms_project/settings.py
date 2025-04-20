@@ -125,6 +125,8 @@ TIME_ZONE = "UTC"
 USE_I18N = True
 
 USE_TZ = True
+WHITENOISE_SKIP_COMPRESS = True
+
 
 
 # Static files (CSS, JavaScript, Images)
