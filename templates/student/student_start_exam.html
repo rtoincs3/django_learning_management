@@ -1,0 +1,81 @@
+{% extends 'student_base.html' %}
+{% block content %}
+<div class="page-wrapper">
+    <!-- ============================================================== -->
+    <!-- Bread crumb and right sidebar toggle -->
+    <!-- ============================================================== -->
+    <div class="page-breadcrumb">
+        <div class="row">
+            <div class="col-5 align-self-center">
+                <h4 class="page-title">Exam</h4>
+            </div>
+            <div class="col-7 align-self-center">
+                <div class="d-flex align-items-center justify-content-end">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a href="#">Home</a>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">Exam</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="card-title">{{ exam.title }}</h3>
+                        <p class="card-text">{{ exam.description }}</p>
+                        <p class="card-text">{{ exam.start_time }} - To - {{ exam.end_time }}</p>
+                        <p class="card-text">Duration: {{ exam.duration_miniutes }} Miniutes</p>
+                        <p class="card-text">Total Marks: {{ exam.total_marks }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <form method="POST">
+            {% csrf_token %}
+            <div class="row">
+                {% for question in questions %}
+                    <div class="col-md-6 mb-4">
+                        <div class="card card-body h-100" style="box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;">
+                            <h4 class="card-title">Question {{ forloop.counter }}</h4>
+                            <div class="form-group">
+                                <label>Question Description</label>
+                                <textarea name="q_text_{{ question.id }}" class="form-control" rows="3" readonly>{{ question.text }}</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Question Marks</label>
+                                <input type="number" name="q_marks_{{ question.id }}" class="form-control" value="{{ question.marks }}" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label>Options</label>
+                                {% for option in question.Options.all %}
+                                    <div class="d-flex align-items-center mb-2">
+                                        <input type="radio" name="q_correct_{{ question.id }}" value="{{ option.id }}" class="me-2">
+                                        <input type="text" class="form-control ml-2" value="{{ option.text }}" readonly>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+    
+            <div class="row">
+                <div class="col-12 text-center">
+                    <button type="submit" class="btn btn-success mt-3 btn-lg">Submit Exam</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    
+
+</div>
+{% endblock %}
